@@ -61,14 +61,13 @@ struct WebView : UIViewRepresentable {
             
             Task {
                 await step1(webView)
-                await step2(webView)
+                await step2new(webView)
             }
             
         }
         
         func  step1(_ webView: WKWebView) async {
             await webView.evaluateJavaScript( "document.getElementsByClassName('VfPpkd-Jh9lGc')[2].click();") { (result, error) in
-//                print(result)
                 if let error = error {
                     print("JavaScript Error: \(error.localizedDescription)")
                 }
@@ -77,11 +76,61 @@ struct WebView : UIViewRepresentable {
         
         func  step2(_ webView: WKWebView) async {
             await webView.evaluateJavaScript( "document.getElementsByClassName('VfPpkd-StrnGf-rymPhb-pZXsl')[0].click();") { (result, error) in
-//                print(result)
+                if let error = error {
+                    print("JavaScript Error: \(error.localizedDescription)")
+                }
+            }
+        }
+        
+        func step2new(_ webView: WKWebView) async {
+            await webView.evaluateJavaScript("document.getElementsByClassName('VfPpkd-StrnGf-rymPhb-pZXsl')[0].click();") { [weak self] (result, error) in
+                if let error = error {
+                    print("JavaScript Error: \(error.localizedDescription)")
+                } else {
+                    // Đợi và kiểm tra trạng thái sau đó gọi step3
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                        Task {
+                            await self?.step3(webView)
+                            await self?.step4(webView)
+                            await self?.step5(webView)
+                            
+                        }
+                    }
+                }
+            }
+        }
+        
+        func step3(_ webView: WKWebView) async {
+            
+            
+            await webView.evaluateJavaScript( "javascript:document.getElementById('firstName').value='something';") { (result, error) in
+                
+                if let error = error {
+                    print("JavaScript Error: \(error.localizedDescription)")
+                }
+            }
+        }
+        
+        func step4(_ webView: WKWebView) async {
+            
+            
+            await webView.evaluateJavaScript( "javascript:document.getElementById('lastName').value='something';") { (result, error) in
+                
+                if let error = error {
+                    print("JavaScript Error: \(error.localizedDescription)")
+                }
+            }
+        }
+        func step5(_ webView: WKWebView) async {
+            
+            
+            await webView.evaluateJavaScript( "javascript:document.getElementsByClassName('VfPpkd-Jh9lGc')[0].click();") { (result, error) in
+                
                 if let error = error {
                     print("JavaScript Error: \(error.localizedDescription)")
                 }
             }
         }
     }
+    
 }
