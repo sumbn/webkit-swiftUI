@@ -59,8 +59,25 @@ struct WebView : UIViewRepresentable {
         
         func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
             
-            webView.evaluateJavaScript( "document.getElementsByClassName('VfPpkd-Jh9lGc')[2].click();") { (result, error) in
-                print("done")
+            Task {
+                await step1(webView)
+                await step2(webView)
+            }
+            
+        }
+        
+        func  step1(_ webView: WKWebView) async {
+            await webView.evaluateJavaScript( "document.getElementsByClassName('VfPpkd-Jh9lGc')[2].click();") { (result, error) in
+//                print(result)
+                if let error = error {
+                    print("JavaScript Error: \(error.localizedDescription)")
+                }
+            }
+        }
+        
+        func  step2(_ webView: WKWebView) async {
+            await webView.evaluateJavaScript( "document.getElementsByClassName('VfPpkd-StrnGf-rymPhb-pZXsl')[0].click();") { (result, error) in
+//                print(result)
                 if let error = error {
                     print("JavaScript Error: \(error.localizedDescription)")
                 }
