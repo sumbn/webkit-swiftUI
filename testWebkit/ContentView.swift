@@ -6,19 +6,39 @@
 //
 
 import SwiftUI
+import WebKit
 
 struct ContentView: View {
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+            container(url: openWeb())
         }
         .padding()
+        
+    }
+    
+    func container(url : URLRequest) -> WebView {
+        WebView(req: url)
+    }
+    
+    func openWeb() -> URLRequest {
+        let url = URL(string: "https://youtube.com")
+        return URLRequest(url: url!)
     }
 }
 
 #Preview {
     ContentView()
+}
+
+struct WebView : UIViewRepresentable {
+    let req: URLRequest
+    
+    func updateUIView(_ uiView: UIViewType, context: Context) {
+        uiView.load(req)
+    }
+    
+    func makeUIView(context: Context) -> WKWebView {
+        return WKWebView()
+    }
 }
