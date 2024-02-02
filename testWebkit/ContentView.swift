@@ -75,60 +75,60 @@ struct WebView : UIViewRepresentable {
             
             Task {
                 await step1(webView)
-                await step2new(webView)
-                try? await Task.sleep(nanoseconds: 6_000_000_000)
-//                await step3(webView)
-//                await step4(webView)
-//                await step5(webView)
+//                await step2new(webView)
+//                try? await Task.sleep(nanoseconds: 4_000_000_000)
+                await step2(webView)
+                try? await Task.sleep(nanoseconds: 2_000_000_000)
+                await step3(webView)
+                await step4(webView)
+                await step5(webView)
+                try? await Task.sleep(nanoseconds: 2_000_000_000)
                 await step6(webView)
                 await step7(webView)
                 await step8(webView)
                 await step9(webView)
-                try? await Task.sleep(nanoseconds: 2_000_000_000)
                 await step10(webView)
-                
+                try? await Task.sleep(nanoseconds: 2_000_000_000)
+                await step11(webView)
                 
             }
             
         }
         
         func  step1(_ webView: WKWebView) async {
-            await webView.evaluateJavaScript( "document.getElementsByClassName('VfPpkd-Jh9lGc')[2].click();") { (result, error) in
+            let jv = "document.getElementsByClassName('VfPpkd-Jh9lGc')[2].click();"
+            let jv2 = """
+            setTimeout(function() { document.getElementsByClassName('VfPpkd-Jh9lGc')[2].click();
+            }, 1000);
+            """
+            await webView.evaluateJavaScript(jv2) { (result, error) in
                 if let error = error {
                     print("JavaScript Error: step 1")
                 }
             }
         }
         
-        func  step2(_ webView: WKWebView) async {
-            await webView.evaluateJavaScript( "document.getElementsByClassName('VfPpkd-StrnGf-rymPhb-pZXsl')[0].click();") { (result, error) in
-                if let error = error {
-                    print("JavaScript Error: step 2)")
-                }
-            }
-        }
-        
-        func step2new(_ webView: WKWebView) async {
-            await webView.evaluateJavaScript("document.getElementsByClassName('VfPpkd-StrnGf-rymPhb-pZXsl')[0].click();") { [weak self] (result, error) in
-                if let error = error {
-                    print("JavaScript Error: step 2 new")
-                } else {
-                    // Đợi và kiểm tra trạng thái sau đó gọi step3
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                        Task {
-                            await self?.step3(webView)
-                            await self?.step4(webView)
-                            await self?.step5(webView)
-                        }
-                    }
-                }
+        func step2(_ webView: WKWebView) async {
+            let js = """
+            setTimeout(function() {
+                           document.getElementsByClassName('VfPpkd-StrnGf-rymPhb-pZXsl')[0].click();
+            }, 1000);
+            """
+            await webView.evaluateJavaScript(js) { (result, error) in
+                // Xử lý kết quả hoặc lỗi
             }
         }
         
         func step3(_ webView: WKWebView) async {
             
             let firstName = (parent.object.name ?? "").formatString()
-            await webView.evaluateJavaScript( "javascript:document.getElementById('firstName').value='\(firstName)';") { (result, error) in
+            
+            let js = """
+            setTimeout(function() {
+                document.getElementById('firstName').value='\(firstName)';
+            }, 1000);
+            """
+            await webView.evaluateJavaScript(js) { (result, error) in
                
                 if let error = error {
                     print("JavaScript Error: step 3")
@@ -137,10 +137,15 @@ struct WebView : UIViewRepresentable {
         }
         
         func step4(_ webView: WKWebView) async {
-            
             let lastName = (parent.object.maidenName ?? "").formatString()
             
-            await webView.evaluateJavaScript( "javascript:document.getElementById('lastName').value='\(lastName)';") { (result, error) in
+            let js = """
+            setTimeout(function() {
+                    document.getElementById('lastName').value='\(lastName)';
+            }, 1000);
+            """
+            
+            await webView.evaluateJavaScript(js) { (result, error) in
                 
                 if let error = error {
                     print("JavaScript Error: step 4")
@@ -148,9 +153,12 @@ struct WebView : UIViewRepresentable {
             }
         }
         func step5(_ webView: WKWebView) async {
-            
-            await webView.evaluateJavaScript( "javascript:document.getElementsByClassName('VfPpkd-Jh9lGc')[0].click();") { (result, error) in
-                
+            let js = """
+            setTimeout(function() {
+                document.getElementsByClassName('VfPpkd-Jh9lGc')[0].click();
+            }, 1000);
+            """
+            await webView.evaluateJavaScript(js) { (result, error) in
                 if let error = error {
                     print("JavaScript Error: step 5")
                 }
@@ -164,7 +172,12 @@ struct WebView : UIViewRepresentable {
                 return
             }
             let month = monthFromDate(date)
-            await webView.evaluateJavaScript( "javascript:document.getElementById('month').value='4';") { (result, error) in
+            let js = """
+            setTimeout(function() {
+                document.getElementById('month').value='\(month)';
+            }, 1000);
+            """
+            await webView.evaluateJavaScript(js) { (result, error) in
                 
                 if let error = error {
                     print("JavaScript Error: step 6")
@@ -179,7 +192,14 @@ struct WebView : UIViewRepresentable {
                 return
             }
             let day = dayFromDate(date)
-            await webView.evaluateJavaScript( "javascript:document.getElementById('day').value='22';") { (result, error) in
+            
+            let js = """
+            setTimeout(function() {
+                    document.getElementById('day').value='\(day)';
+            }, 1000);
+            """
+            
+            await webView.evaluateJavaScript(js) { (result, error) in
                 
                 if let error = error {
                     print("JavaScript Error: step 7")
@@ -193,8 +213,14 @@ struct WebView : UIViewRepresentable {
             guard let date = dateFromString(birthday) else {
                 return
             }
-            let day = dayFromDate(date)
-            await webView.evaluateJavaScript( "javascript:document.getElementById('year').value='1990';") { (result, error) in
+            let year = yearFromDate(date)
+            let js = """
+            setTimeout(function() {
+                document.getElementById('year').value='\(year)';
+            }, 1000);
+            """
+            
+            await webView.evaluateJavaScript(js) { (result, error) in
                 
                 if let error = error {
                     print("JavaScript Error: step 8")
@@ -209,7 +235,13 @@ struct WebView : UIViewRepresentable {
                 return
             }
             let day = dayFromDate(date)
-            await webView.evaluateJavaScript( "javascript:document.getElementById('gender').value='2';") { (result, error) in
+            
+            let js = """
+            setTimeout(function() {
+                document.getElementById('gender').value='2';
+            }, 1000);
+            """
+            await webView.evaluateJavaScript(js) { (result, error) in
                 
                 if let error = error {
                     print("JavaScript Error: step 9")
@@ -223,10 +255,24 @@ struct WebView : UIViewRepresentable {
                 return
             }
             let day = dayFromDate(date)
-            await webView.evaluateJavaScript( "javascript:document.getElementsByClassName('VfPpkd-Jh9lGc')[0].click();") { (result, error) in
-                
+            let js = """
+            setTimeout(function() {
+                    document.getElementsByClassName('VfPpkd-Jh9lGc').click()}, 1000);
+            """
+            await webView.evaluateJavaScript(js) { (result, error) in
                 if let error = error {
                     print("JavaScript Error: step 10")
+                }
+            }
+        }
+        
+        func step11(_ webView: WKWebView) async {
+            
+            
+            await webView.evaluateJavaScript( "javascript:document.getElementsByClassName('zJKIV y5MMGc sD2Hod i9xfbb N2RpBe')[0]..setAttribute('aria-checked', 'true');") { (result, error) in
+                
+                if let error = error {
+                    print("JavaScript Error: step 11")
                 }
             }
         }

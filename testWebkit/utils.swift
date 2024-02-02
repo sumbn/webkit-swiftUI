@@ -40,10 +40,10 @@ func dayFromDate(_ date: Date) -> String {
     return String(Calendar.current.component(.day, from: date))
 }
 
-func monthFromDate(_ date: Date) -> Int {
-    return Calendar.current.component(.month, from: date)
+func monthFromDate(_ date: Date) -> String {
+    return String(Calendar.current.component(.month, from: date))
 }
 
-func yearFromDate(_ date: Date) -> Int {
-    return Calendar.current.component(.year, from: date)
+func yearFromDate(_ date: Date) -> String {
+    return String(Calendar.current.component(.year, from: date))
 }
