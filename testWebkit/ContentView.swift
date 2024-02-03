@@ -75,8 +75,6 @@ struct WebView : UIViewRepresentable {
             
             Task {
                 await step1(webView)
-//                await step2new(webView)
-//                try? await Task.sleep(nanoseconds: 4_000_000_000)
                 await step2(webView)
                 try? await Task.sleep(nanoseconds: 2_000_000_000)
                 await step3(webView)
@@ -88,21 +86,21 @@ struct WebView : UIViewRepresentable {
                 await step8(webView)
                 await step9(webView)
                 await step10(webView)
-                try? await Task.sleep(nanoseconds: 2_000_000_000)
-                await step11(webView)
                 
             }
             
         }
         
         func  step1(_ webView: WKWebView) async {
-            let jv = "document.getElementsByClassName('VfPpkd-Jh9lGc')[2].click();"
-            let jv2 = """
-            setTimeout(function() { document.getElementsByClassName('VfPpkd-Jh9lGc')[2].click();
+//            let jv = "document.getElementsByClassName('VfPpkd-Jh9lGc')[2].click();"
+            let jv = """
+            setTimeout(function() { 
+                document.getElementById('yDmH0d').click();
             }, 1000);
             """
-            await webView.evaluateJavaScript(jv2) { (result, error) in
-                if let error = error {
+            
+            await webView.evaluateJavaScript(jv) { (result, error) in
+                if error != nil {
                     print("JavaScript Error: step 1")
                 }
             }
@@ -111,7 +109,7 @@ struct WebView : UIViewRepresentable {
         func step2(_ webView: WKWebView) async {
             let js = """
             setTimeout(function() {
-                           document.getElementsByClassName('VfPpkd-StrnGf-rymPhb-pZXsl')[0].click();
+                document.getElementsByClassName('VfPpkd-StrnGf-rymPhb-pZXsl')[0].click();
             }, 1000);
             """
             await webView.evaluateJavaScript(js) { (result, error) in
@@ -130,7 +128,7 @@ struct WebView : UIViewRepresentable {
             """
             await webView.evaluateJavaScript(js) { (result, error) in
                
-                if let error = error {
+                if error != nil {
                     print("JavaScript Error: step 3")
                 }
             }
@@ -147,19 +145,25 @@ struct WebView : UIViewRepresentable {
             
             await webView.evaluateJavaScript(js) { (result, error) in
                 
-                if let error = error {
+                if error != nil {
                     print("JavaScript Error: step 4")
                 }
             }
         }
         func step5(_ webView: WKWebView) async {
+//            let js2 = """
+//            setTimeout(function() {
+//                document.getElementsByClassName('VfPpkd-Jh9lGc')[0].click();
+//            }, 1000);
+//            """
+            
             let js = """
             setTimeout(function() {
-                document.getElementsByClassName('VfPpkd-Jh9lGc')[0].click();
+                document.getElementById('collectNameNext').click();
             }, 1000);
             """
             await webView.evaluateJavaScript(js) { (result, error) in
-                if let error = error {
+                if error != nil {
                     print("JavaScript Error: step 5")
                 }
             }
@@ -179,7 +183,7 @@ struct WebView : UIViewRepresentable {
             """
             await webView.evaluateJavaScript(js) { (result, error) in
                 
-                if let error = error {
+                if error != nil {
                     print("JavaScript Error: step 6")
                 }
             }
@@ -201,7 +205,7 @@ struct WebView : UIViewRepresentable {
             
             await webView.evaluateJavaScript(js) { (result, error) in
                 
-                if let error = error {
+                if error != nil {
                     print("JavaScript Error: step 7")
                 }
             }
@@ -222,20 +226,13 @@ struct WebView : UIViewRepresentable {
             
             await webView.evaluateJavaScript(js) { (result, error) in
                 
-                if let error = error {
+                if error != nil {
                     print("JavaScript Error: step 8")
                 }
             }
         }
         
         func step9(_ webView: WKWebView) async {
-            
-            let birthday = parent.object.birthData ?? "01-01-2000"
-            guard let date = dateFromString(birthday) else {
-                return
-            }
-            let day = dayFromDate(date)
-            
             let js = """
             setTimeout(function() {
                 document.getElementById('gender').value='2';
@@ -243,24 +240,24 @@ struct WebView : UIViewRepresentable {
             """
             await webView.evaluateJavaScript(js) { (result, error) in
                 
-                if let error = error {
+                if error != nil {
                     print("JavaScript Error: step 9")
                 }
             }
         }
+        
         func step10(_ webView: WKWebView) async {
             
-            let birthday = parent.object.birthData ?? "01-01-2000"
-            guard let date = dateFromString(birthday) else {
-                return
-            }
-            let day = dayFromDate(date)
+//            let js2 = """
+//            setTimeout(function() {
+//                document.getElementsByClassName('VfPpkd-Jh9lGc')[0].click()}, 1000);
+//            """
             let js = """
             setTimeout(function() {
-                    document.getElementsByClassName('VfPpkd-Jh9lGc').click()}, 1000);
+                document.getElementById('birthdaygenderNext').click()}, 1000);
             """
             await webView.evaluateJavaScript(js) { (result, error) in
-                if let error = error {
+                if error != nil {
                     print("JavaScript Error: step 10")
                 }
             }
@@ -268,11 +265,33 @@ struct WebView : UIViewRepresentable {
         
         func step11(_ webView: WKWebView) async {
             
+            let jsSave = "document.getElementsByClassName('whsOnd zHQkBf')[0].value = 'nguyenvanabc' "
             
-            await webView.evaluateJavaScript( "javascript:document.getElementsByClassName('zJKIV y5MMGc sD2Hod i9xfbb N2RpBe')[0]..setAttribute('aria-checked', 'true');") { (result, error) in
+            
+            let js2 = """
+            setTimeout(function() { document.getElementsByClassName('rBUW7e')[2].checked = '2'; }, 1000);
+            """
+            let js = """
+                    document.querySelectorAll('[role="radio"]')[2].setAttribute('aria-checked', 'true')
+            """
+            
+            await webView.evaluateJavaScript(js){ (result, error) in
                 
                 if let error = error {
                     print("JavaScript Error: step 11")
+                }
+            }
+        }
+        
+        func step12(_ webView: WKWebView) async {
+            
+            let js = """
+            setTimeout(function() {
+                document.getElementById('next').click()}, 1000);
+            """
+            await webView.evaluateJavaScript(js) { (result, error) in
+                if let error = error {
+                    print("JavaScript Error: step 10")
                 }
             }
         }
@@ -288,11 +307,3 @@ extension String {
     }
 }
 
-//func checkValue(_ query: String) async {
-//    await webView.evaluateJavaScript( "javascript:document.getElementById('month').value='\(day)';") { (result, error) in
-//        
-//        if let error = error {
-//            print("JavaScript Error: step 6")
-//        }
-//    }
-//})
