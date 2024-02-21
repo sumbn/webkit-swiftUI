@@ -86,7 +86,9 @@ struct WebView : UIViewRepresentable {
                 await step8(webView)
                 await step9(webView)
                 await step10(webView)
-                
+                await step11(webView)
+                await step12(webView)
+                await step13(webView)
             }
             
         }
@@ -265,14 +267,9 @@ struct WebView : UIViewRepresentable {
         
         func step11(_ webView: WKWebView) async {
             
-            let jsSave = "document.getElementsByClassName('whsOnd zHQkBf')[0].value = 'nguyenvanabc' "
-            
-            
-            let js2 = """
-            setTimeout(function() { document.getElementsByClassName('rBUW7e')[2].checked = '2'; }, 1000);
-            """
             let js = """
-                    document.querySelectorAll('[role="radio"]')[2].setAttribute('aria-checked', 'true')
+                    var button = document.querySelector('#yDmH0d > c-wiz > div.aDGQwe > div.eKnrVb > div > div.j663ec > div > form > span > section > div > div > div.IhH7Wd.hdGwMb.V9RXW > div.ci67pc > div > span > div:nth-child(3) > div > div.enBDyd > div > div.SCWude > div');
+                    button.click();
             """
             
             await webView.evaluateJavaScript(js){ (result, error) in
@@ -284,6 +281,20 @@ struct WebView : UIViewRepresentable {
         }
         
         func step12(_ webView: WKWebView) async {
+            
+            let js = """
+                                setTimeout(function() { document.getElementsByClassName('whsOnd zHQkBf')[0].value = 'nguyenvanabc'; }, 2000);
+            """
+            
+            await webView.evaluateJavaScript(js){ (result, error) in
+                
+                if let error = error {
+                    print("JavaScript Error: step 11")
+                }
+            }
+        }
+        
+        func step13(_ webView: WKWebView) async {
             
             let js = """
             setTimeout(function() {
